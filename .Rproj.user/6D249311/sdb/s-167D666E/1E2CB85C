@@ -1,0 +1,16 @@
+{
+    "contents" : "---\ntitle: \"Reproducible Research: Peer Assessment 1\"\noutput: \n  html_document:\n    keep_md: true\n---\n\n\n## Loading and preprocessing the data\nStep 1 - Extract the data within the activity.zip file. The activity.zip file contains only one file activity.csv, so I didn't bother building too many smarts into my routine.\nStep 2 - Read the data into a Data.Frame.\n\n```{r}\n\nunzip(\"activity.zip\")\ndata <- read.csv(\"activity.csv\")\n\n```\n\n\n\n\n## What is mean total number of steps taken per day?\nStep 3 - Aggregated the steps by date, using sum as the fucntion\nStep 4 - Plotted Histogram of aggregated step data\n```{r}\naggdata <- aggregate(steps ~ date, data=data, sum)\nhist(aggdata$steps, breaks = 25)\n```\n\nStep 5 and 6 - Calculate the Mean and Medium\n```{r}\nmean(aggdata$steps)\nmedian(aggdata$steps)\n```\n\n\n## What is the average daily activity pattern?\nStep 7 - Aggregate the steps by internal period, using mean as the function\nStep 8 - Produced line plot, with interval as the x-axis and steps for the y-axis\n```{r}\naggdata2 <- aggregate(steps ~ interval, data=data, mean)\nplot(aggdata2, type = \"l\")\n\n```\n\nStep 9 - Ordered the aggregated step data, and then selected the first instance to show the highest step date in the set.\n```{r}\nx <- order(aggdata2$steps, decreasing = TRUE)\naggdata2[x[1],]\n\n```\n\n\n\n\n## Imputing missing values\n```{r}\n\n```\n\n\n\n## Are there differences in activity patterns between weekdays and weekends?\n",
+    "created" : 1413758114580.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2829193708",
+    "id" : "1E2CB85C",
+    "lastKnownWriteTime" : 1413761251,
+    "path" : "H:/GitHub/RepData_PeerAssessment1/PA1_template.Rmd",
+    "project_path" : "PA1_template.Rmd",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_markdown"
+}
