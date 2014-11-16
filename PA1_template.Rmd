@@ -1,64 +1,157 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
 output: 
-  html_document:
-    keep_md: true
+html_document:
+keep_md: true
 ---
 
 
 ## Loading and preprocessing the data
-Step 1 - Extract the data within the activity.zip file. The activity.zip file contains only one file activity.csv, so I didn't bother building too many smarts into my routine.
-Step 2 - Read the data into a Data.Frame.
 
-```{r}
+1. Unpackage data file from within the *activity.zip* file. Read the data file *activity.csv* into a data.frame.
+
+NOTE: I assumed only the data file *activity.csv* is within the zip file. Hence, I my routine does not check for multiple files, file names etc.
+```{r echo = TRUE}
 
 unzip("activity.zip")
-data <- read.csv("activity.csv")
+stepData <- read.csv("activity.csv")
 
 ```
-
-
 
 
 ## What is mean total number of steps taken per day?
-Step 3 - Aggregated the steps by date, using sum as the fucntion
-Step 4 - Plotted Histogram of aggregated step data
-```{r}
-aggdata <- aggregate(steps ~ date, data=data, sum)
-hist(aggdata$steps, breaks = 25)
+1. Aggregate the steps by date, using sum as the function. Plotted a Histogram of aggregate step data.
+```{r echo = TRUE}
+
+aggdata <- aggregate(steps ~ date, data=stepData, sum)
+hist(aggdata$steps, breaks = 25, xlab = "Steps", main = "Histogram of Steps")
+
 ```
 
-Step 5 and 6 - Calculate the Mean and Medium
-```{r}
-mean(aggdata$steps)
-median(aggdata$steps)
+2. Calculate the _Mean_ and _Medium_
+```{r echo = TRUE}
+
+aggdataMean <- mean(aggdata$steps)
+aggdataMedian <-median(aggdata$steps)
+print(paste("The mean is", round(aggdataMean, 2))
+print(paste("The medium is", aggdataMedian))
+
 ```
+
 
 
 ## What is the average daily activity pattern?
-Step 7 - Aggregate the steps by internal period, using mean as the function
-Step 8 - Produced line plot, with interval as the x-axis and steps for the y-axis
-```{r}
-aggdata2 <- aggregate(steps ~ interval, data=data, mean)
+1. Aggregate the steps by interval period, using mean as the function. Produced a line plot, with interval as the x-axis and steps for the y-axis
+
+```{r echo = TRUE}
+
+aggdata2 <- aggregate(steps ~ interval, data=stepData, mean)
 plot(aggdata2, type = "l")
 
 ```
 
-Step 9 - Ordered the aggregated step data, and then selected the first instance to show the highest step date in the set.
-```{r}
-x <- order(aggdata2$steps, decreasing = TRUE)
-aggdata2[x[1],]
+2. - Ordered the aggregated step data, and then selected the first instance to show the highest step date in the set.
+```{r echo = TRUE}
+orderAggData2 <- order(aggdata2$steps, decreasing = TRUE)
+maxAggData2 <- aggdata2[orderAggData2[1],]
+print(paste("The maximum 5-minute interval average across all days is", row.names(maxAggData2)))
 
 ```
-
 
 
 
 ## Imputing missing values
-```{r}
+1. Report the total number of rows with missing data (i.e. NA)
+```{r echo = TRUE}
+sumNaDateData <- sum(is.na(stepData$date))
+sumNaIntervalData <- sum(is.na(stepData$interval))
+sumNaStepData <- sum(is.na(stepData$steps))
+
+if(sumNaDateData != 0) {
+    print(paste("The total number of rows with missing date data is", sumNaDateData))
+    }
+
+if(sumNaIntervalData != 0) {
+    print(paste("The total number of rows with missing interval data is", sumNaIntervalData))
+    }
+
+if(sumNaStepData != 0) {
+    print(paste("The total number of rows with missing step data is", sumNaStepData))
+    }
+
+```
+
+2. The methodolgy I have used to fill in the missing data (i.e. NA values) is to iterate through the dataset, checking the step value for each row. Where the row has an NA steps value, I determine the interval and then create a subet of all rows for that time interval. From the subet a calculate the mean steps (omiting NA values), round the value to zero decimal places and then write the value back into the dataset.
+
+NOTE: These operations are all performed on a cloned version of the original dataset.
+
+3. Below is the code used to create the new dataset with the missing values filled in 
+
+```{r echo = TRUE}
+tidyData <- stepData
+
+n <- nrow(tidyData)
+
+for(i in 1:n) {
+    if(is.na(tidyData[i,1])) {
+        subsetTidyData <- subset(tidyData, interval == data[i,3])
+        subsetTidyStepData <- na.omit(subsetTidyData$steps)
+        tidyData[i,1] <- round(mean(subsetTidyStepData))
+    }
+}
+
+```
+
+4. 
+
+
+
+
+
+
+
+```{r echo = TRUE}
+
+aggTidyData <- aggregate(steps ~ date, data=tidyData, sum)
+hist(aggTidyData$steps, breaks = 25, xlab = "Steps", main = "Histogram of Steps")
+
+```
+
+2. Calculate the _Mean_ and _Medium_
+```{r echo = TRUE}
+
+aggTidyDataMean <- mean(aggTidyData$steps)
+aggTidyDataMedian <-median(aggTidyData$steps)
+
+print(paste("The mean is", round(aggTidyDataMean, 2)))
+print(paste("The medium is", aggTidyDataMedian))
+
+```
+
+
+```{r echo = TRUE}
+hist(aggTidyData$steps, breaks = 25, xlab = "Steps", main = "An overly of both Histograms", col="blue", ylim = c(0, 20))
+
+par(new = TRUE)
+
+
+hist(aggdata$steps, breaks = 25, xlab = "Steps", main = "", border="red", ylim = c(0, 20))
 
 ```
 
 
 
+
+
+
+
+
+
+
+
+
 ## Are there differences in activity patterns between weekdays and weekends?
+```{r echo = TRUE}
+
+```
+
