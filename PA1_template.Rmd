@@ -170,7 +170,6 @@ weekendData <- subset(tidyData, workDay == "weekend", select = c(interval, steps
 aggdata3 <- aggregate(steps ~ interval, data=weekdayData, mean)
 aggdata4 <- aggregate(steps ~ interval, data=weekendData, mean)
 
-
 par(mfrow=c(2,1), mai = c(0.75, 1.5, 0.5, 1.5))
 plot(aggdata3, type = "l", main = "Weekday" )
 plot(aggdata4, type = "l", main = "Weekend")

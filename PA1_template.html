@@ -189,7 +189,6 @@ weekendData &lt;- subset(tidyData, workDay == &quot;weekend&quot;, select = c(in
 aggdata3 &lt;- aggregate(steps ~ interval, data=weekdayData, mean)
 aggdata4 &lt;- aggregate(steps ~ interval, data=weekendData, mean)
 
-
 par(mfrow=c(2,1), mai = c(0.75, 1.5, 0.5, 1.5))
 plot(aggdata3, type = &quot;l&quot;, main = &quot;Weekday&quot; )
 plot(aggdata4, type = &quot;l&quot;, main = &quot;Weekend&quot;)</code></pre>
