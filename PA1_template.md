@@ -10,15 +10,14 @@ keep_md: true
 
 1. Unpackage data file from within the *activity.zip* file. Read the data file *activity.csv* into a data.frame. In addition, I convert the date values into Date objects.
 
-NOTE: I assumed only the data file *activity.csv* is within the zip file. Hence, I my routine does not check for multiple files, file names etc.
+NOTE: Have assumed only the file *activity.csv* is within the zip file. Hence, my routine does not check for multiple files, file names etc.
 
 ```r
 unzip("activity.zip")
 stepData <- read.csv("activity.csv")
 stepData$date <- as.Date(stepData$date)
 ```
-
-
+  
 ## What is mean total number of steps taken per day?
 1. Aggregate the steps by date, using sum as the function. Plotted a Histogram of aggregate step data.
 
@@ -27,36 +26,36 @@ aggdata <- aggregate(steps ~ date, data=stepData, sum)
 hist(aggdata$steps, breaks = 25, xlab = "Steps", main = "Histogram of Steps")
 ```
 
-![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png) 
+![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1-1.png) 
 
-2. Calculate the _Mean_ and _Medium_
+2. Calculate the _Mean_ steps taken per day
 
 ```r
-aggdataMean <- mean(aggdata$steps)
-aggdataMedian <-median(aggdata$steps)
-print(paste("The mean is", round(aggdataMean, 2)))
+aggdataMean <- round(mean(aggdata$steps), 2)
+print(paste("The mean is", aggdataMean))
 ```
 
 ```
 ## [1] "The mean is 10766.19"
 ```
 
+Calculate the _Medium_ steps taken per day
+
 ```r
+aggdataMedian <-median(aggdata$steps)
 print(paste("The medium is", aggdataMedian))
 ```
 
 ```
 ## [1] "The medium is 10765"
 ```
-
-
-
+  
 ## What is the average daily activity pattern?
 1. Aggregate the steps by interval period, using mean as the function. Produced a line plot, with interval as the x-axis and steps for the y-axis
 
 ```r
 aggdata2 <- aggregate(steps ~ interval, data=stepData, mean)
-plot(aggdata2, type = "l", main = "Line Plot of Steps versus 5-Minute Interval Times")
+plot(aggdata2, type = "l", main = "Line Plot of Average Steps Tken vs 5-Minute Interval Times")
 ```
 
 ![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
@@ -66,20 +65,16 @@ plot(aggdata2, type = "l", main = "Line Plot of Steps versus 5-Minute Interval T
 ```r
 orderAggData2 <- order(aggdata2$steps, decreasing = TRUE)
 maxAggData2 <- aggdata2[orderAggData2[1],]
+# NOTE: The are only 288 5-minute intervals in a day.
+# 288 = 24 * (60/5)
+
 print(paste("The maximum 5-minute interval average across all days is", row.names(maxAggData2)))
 ```
 
 ```
 ## [1] "The maximum 5-minute interval average across all days is 104"
 ```
-
-```r
-# NOTE: The are only 288 5-minute intervals in a day.
-# 288 = 24 * (60/5)
-```
-
-
-
+  
 ## Imputing missing values
 1. Report the total number of rows with missing data (i.e. NA)
 
@@ -105,7 +100,7 @@ if(sumNaStepData != 0) {
 ## [1] "The total number of rows with missing step data is 2304"
 ```
 
-2. The methodolgy I've used for filling missing data (i.e. NA values) is to iterate through the dataset and checking the step value for each row. For rows with a steps value equal to NA, I determine the interval and then create a subet of all rows for that time interval. From the subet I calculate the mean steps (omiting NA values), round the value to zero decimal places and then write the value back into the dataset.
+2. The methodolgy I have used for filling missing data (i.e. NA values), is to iterate through the dataset and checking the step value for each row. For rows with a steps value equal to NA, I determine the interval and then create a subet of all rows for that time interval. From the subet I calculate the mean steps (omiting NA values), round the value to zero decimal places and then write the value back into the dataset.
 
 NOTE: These operations are all performed on a cloned version of the original dataset.
 
@@ -165,7 +160,7 @@ hist(aggdata$steps, breaks = 25, xlab = "Steps", main = "", col="royalblue", yli
 ```
 
 ![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png) 
-
+  
 ## Are there differences in activity patterns between weekdays and weekends?
 1. Create a character vector containing the day of the week, from the date values in the tidyData dataset and using the weekdays() funcation.
 
