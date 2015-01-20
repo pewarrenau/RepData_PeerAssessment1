@@ -26,7 +26,7 @@ aggdata <- aggregate(steps ~ date, data=stepData, sum)
 hist(aggdata$steps, breaks = 25, xlab = "Steps", main = "Histogram of Steps")
 ```
 
-![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1-1.png) 
+![plot of chunk hist_Steps](figure/hist_Steps-1.png) 
 
 2. Calculate the _Mean_ steps taken per day
 
@@ -58,7 +58,7 @@ aggdata2 <- aggregate(steps ~ interval, data=stepData, mean)
 plot(aggdata2, type = "l", main = "Line Plot of Average Steps Tken vs 5-Minute Interval Times")
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
+![plot of chunk plot_DailyActivity](figure/plot_DailyActivity-1.png) 
 
 2. Ordered the aggregated step data, and then selected the first instance to show the highest step date in the set.
 
@@ -127,7 +127,7 @@ aggTidyData <- aggregate(steps ~ date, data=tidyData, sum)
 hist(aggTidyData$steps, breaks = 25, xlab = "Steps", main = "Histogram of Steps")
 ```
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
+![plot of chunk hist_Tidydata](figure/hist_Tidydata-1.png) 
 
 Calculate the _Mean_ and _Medium_ for the new tidy dataset.
 
@@ -159,7 +159,7 @@ par(new = TRUE)
 hist(aggdata$steps, breaks = 25, xlab = "Steps", main = "", col="royalblue", ylim = c(0, 20))
 ```
 
-![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png) 
+![plot of chunk hist_TidydataOverlay](figure/hist_TidydataOverlay-1.png) 
   
 ## Are there differences in activity patterns between weekdays and weekends?
 1. Create a character vector containing the day of the week, from the date values in the tidyData dataset and using the weekdays() funcation.
@@ -202,5 +202,5 @@ plot(aggdata3, type = "l", main = "Weekday" )
 plot(aggdata4, type = "l", main = "Weekend")
 ```
 
-![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png) 
+![plot of chunk plot_WeekvWeekend](figure/plot_WeekvWeekend-1.png) 
 
